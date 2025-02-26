@@ -13,6 +13,21 @@ void foo2(int* pd, int* pe)
 	*pe = temp;
 }
 
+void foo1()
+{
+	cout << "foo1()" << endl;
+}
+
+string foo0()
+{
+	return "string foo0()";
+}
+
+void ShowInfo(string (*foo0)())
+{
+	cout << foo0() << endl;
+}
+
 void main()
 {
 	int a = 5;
@@ -80,4 +95,8 @@ void main()
 	foo2(&d, &e);
 	cout << d << endl;
 	cout << e << endl;
+	void (*pfoo)();
+	pfoo = foo1;
+	pfoo();
+	ShowInfo(foo0);
 }
