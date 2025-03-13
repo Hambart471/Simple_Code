@@ -1,6 +1,120 @@
 #include <iostream>
 using namespace std;
 
+class My_String
+{
+public:
+	My_String()
+	{
+		str = nullptr;
+		length = 0;
+	}
+	My_String(const char* const str)
+	{
+		length = strlen(str);
+		this->str = new char[++length];
+		for (int i = 0; i < length - 1; ++i)
+		{
+			this->str[i] = str[i];
+		}
+		this->str[length - 1] = '\0';
+	}
+	My_String(const My_String& my_String)
+	{
+		length = strlen(my_String.str);
+		str = new char[++length];
+		for (int i = 0; i < length - 1; ++i)
+		{
+			str[i] = my_String.str[i];
+		}
+		str[length - 1] = '\0';
+	}
+	My_String(My_String&& my_String)
+	{
+		str = my_String.str;
+		my_String.str = nullptr;
+		length = my_String.length;
+	}
+	My_String& operator = (const My_String& my_String)
+	{
+		if (str != nullptr)
+		{
+			delete[] str;
+		}
+		length = strlen(my_String.str);
+		str = new char[++length];
+		for (int i = 0; i < length - 1; ++i)
+		{
+			str[i] = my_String.str[i];
+		}
+		str[length - 1] = '\0';
+		return *this;
+	}
+	My_String operator + (const My_String& my_String)
+	{
+		My_String result;
+		result.length = strlen(str) + strlen(my_String.str);
+		result.str = new char[++result.length];
+		int i = 0;
+		for (; i < strlen(str); ++i)
+		{
+			result.str[i] = str[i];
+		}
+		for (int j = 0; j < strlen(my_String.str); ++i, ++j)
+		{
+			result.str[i] = my_String.str[j];
+		}
+		result.str[result.length - 1] = '\0';
+		return result;
+	}
+	void print()
+	{
+		cout << str << endl;
+	}
+	int my_strlen()
+	{
+		int i = 0;
+		for (; str[i] != '\0'; ++i)
+		{
+		}
+		return i;
+	}
+	int get_length()
+	{
+		return length;
+	}
+	bool operator==(const My_String& my_String)
+	{
+		if (length != my_String.length)
+		{
+			return false;
+		}
+		for (int i = 0; i < length; ++i)
+		{
+			if (str[i] != my_String.str[i])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	bool operator!=(const My_String& my_String)
+	{
+		return !(operator==(my_String));
+	}
+	char& operator[](int index)
+	{
+		return str[index];
+	}
+	~My_String()
+	{
+		delete[] str;
+	}
+private:
+	char* str;
+	int length;
+};
+
 void foo(const char* str)
 {
 	cout << strlen(str) << endl;
@@ -42,7 +156,20 @@ int main()
 	cout << result << endl;
 	string str5 = "Hello";
 	string str6 = "World";
-	string result1;
-	result1 = str5 + str6 + "!";
+	string result1 = str5 + str6 + "!";
 	cout << result1 << endl;
+	My_String my_string("Ham");
+	my_string.print();
+	My_String my_string1("471");
+	my_string1.print();
+	my_string = my_string1;
+	my_string.print();
+	My_String my_string2;
+	my_string2 = my_string + my_string1;
+	my_string2.print();
+	cout << my_string.get_length() << endl;
+	cout << my_string1.get_length()  << endl;
+	cout << my_string2.get_length() << endl;
+	cout << (my_string == my_string1) << endl;
+	cout << (my_string1 == my_string2) << endl;
 }
